@@ -6,6 +6,7 @@ stages:
 variables:
   IMAGE_NAME: "$DOCKER_USERNAME/app"
   IMAGE_TAG: "$CI_COMMIT_SHA"
+  DOCKER_TLS_CERTDIR: ""
 
 test:
   stage: test
@@ -18,20 +19,18 @@ test:
 build:
   stage: build
   image: docker:27.0.3
-  variables:
-    DOCKER_TLS_CERTDIR: ""
   services:
-    - docker:27.0.3-dind
+    - name: docker:27.0.3-dind
+      command: ["--tls=false"]
   script:
     - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$IMAGE_TAG .
 
 push:
   stage: push
   image: docker:27.0.3
-  variables:
-    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:27.0.3-dind
+      command: ["--tls=false"]
   before_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   script:
