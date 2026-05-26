@@ -6,6 +6,7 @@ stages:
 variables:
   IMAGE_NAME: "$DOCKER_USERNAME/app"
   IMAGE_TAG: "$CI_COMMIT_SHA"
+  DOCKER_TLS_CERTDIR: ""
 
 test:
   stage: test
