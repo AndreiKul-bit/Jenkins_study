@@ -10,7 +10,10 @@ pipeline {
     }
     stage('test'){
       agent {
-        docker { image 'python:3.11-slim' }
+        docker { 
+          image 'python:3.11-slim'
+          reuseNode true
+        }
       }
       steps{
         sh 'python --version'
